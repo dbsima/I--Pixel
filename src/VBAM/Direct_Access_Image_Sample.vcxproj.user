@@ -5,7 +5,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>Color_Target.jpg</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>100 200 "C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\VBAM\\bams" "C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\BAM\\images\\H01.png" "C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\VBAM\\dir_out" outBin</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

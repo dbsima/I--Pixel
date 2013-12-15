@@ -10,6 +10,8 @@
 //===========================================================================
 #include "stdafx.h"
 #include "Direct_Access_Image.h"
+#include <iostream>
+#include <fstream> 
 //===========================================================================
 //===========================================================================
 
@@ -17,7 +19,7 @@
 //===========================================================================
 int _tmain(int argc, _TCHAR* argv[])
 {
-	printf("%s\n", argv[1]);
+	//printf("%s\n", argv[1]);
     //Verify command-line usage correctness
     if (argc != 2)
     {
@@ -41,6 +43,11 @@ int _tmain(int argc, _TCHAR* argv[])
     _stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_blurred.TIF"), argv[0]);
     pImage->SaveAs(strNewFileName, SAVE_TIFF_LZW);
 
+	std::ofstream outfile ("C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\BAM\\test.txt");
+	outfile<<"strNewFileName"<<argv[1]<<"\n";
+	outfile.close();
+	 _tprintf(_T("%s\n"), strNewFileName);
+
     //Convert to grayscale
     KImage *pImageGrayscale = pImage->ConvertToGrayscale();
     //Don't forget to delete the original, now useless image
@@ -56,7 +63,6 @@ int _tmain(int argc, _TCHAR* argv[])
     _stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_grayscale.TIF"), argv[0]);
     pImageGrayscale->SaveAs(strNewFileName, SAVE_TIFF_LZW);
     
-	printf("%s\n", strNewFileName);
     //Request direct access to image pixels in raw format
     BYTE **pDataMatrixGrayscale = NULL;
     if (pImageGrayscale->BeginDirectAccess() && (pDataMatrixGrayscale = pImageGrayscale->GetDataMatrix()) != NULL)
