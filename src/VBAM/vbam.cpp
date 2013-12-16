@@ -10,12 +10,31 @@
 //===========================================================================
 #include "stdafx.h"
 #include "Direct_Access_Image.h"
+#include <string>
+#include <windows.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include "dirent.h"
+
+
 //===========================================================================
 //===========================================================================
 
 //===========================================================================
 //===========================================================================
-int _tmain(int argc, _TCHAR* argv[])
+
+using namespace std;
+
+const char *get_filename_ext(const char *filename) {
+    const char *dot = strrchr(filename, '.');
+    if(!dot || dot == filename) return "";
+    return dot + 1;
+}
+
+int main(int argc, char** argv)
 {
     //Verify command-line usage correctness
     if (argc != 7)
@@ -24,8 +43,73 @@ int _tmain(int argc, _TCHAR* argv[])
         return -1;
     }
 
-	_tprintf(_T("hgere"));
+	STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    DWORD dwRes;
+    BOOL bRes;
 
+	ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+	char path_to_exe[100];
+	char command[256];
+
+	DIR *dir;
+	struct dirent *ent;
+	if ((dir = opendir (argv[3])) != NULL) {
+	// print all the files and directories within directory
+		while ((ent = readdir (dir)) != NULL) {
+			if (strcmp(get_filename_ext(ent->d_name), "exe") == 0) {
+				memset(path_to_exe, 0, 100);
+				sprintf_s(path_to_exe, "%s\\\\%s", argv[3], ent->d_name);
+
+				memset(command, 0, 256);
+				sprintf_s(command, " /C %s %s", path_to_exe, argv[4]);
+
+				//TODO get path to cmd from %COMSPEC% environment variable
+				LPCWSTR cmd = (LPTSTR)"C:\\windows\\system32\\cmd.exe";
+				LPTSTR params = (LPTSTR) command;
+
+				//printf("%s\n", cmd);
+				printf("%s%s\n", cmd, params);
+
+				// execute bam
+				bRes = CreateProcess( cmd, 
+								params, 
+								NULL,           // Process handle not inheritable 
+								NULL,           // Thread handle not inheritable 
+								FALSE,          // Set handle inheritance to FALSE 
+								0,              // No creation flags 
+								NULL,           // Use parent's environment block
+								NULL,           // Use parent's starting directory 
+								&si,            // Pointer to STARTUPINFO structure
+								&pi             // Pointer to PROCESS_INFORMATION structure
+								);
+
+				if(bRes == FALSE) printf("CreateProcess failed\n");
+ 
+				//Wait for the child to finish 
+				dwRes = WaitForSingleObject(pi.hProcess, INFINITE);
+				if(dwRes == WAIT_FAILED) printf("WaitForSingleObject");
+ 
+				bRes = GetExitCodeProcess(pi.hProcess, &dwRes);
+				if(bRes == FALSE) printf("%d\n", bRes);
+
+				CloseHandle(&pi.hThread);
+				CloseHandle(&pi.hProcess);
+				
+			}
+
+		}
+		closedir (dir);
+	} else {
+	// could not open directory
+		perror ("");
+		return EXIT_FAILURE;
+	}
+	
+	
 /*
     //Buffer for the new file names
     TCHAR strNewFileName[0x100];

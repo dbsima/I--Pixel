@@ -1,4 +1,8 @@
 ﻿  vbam.cpp
+C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\winbase.h(249): warning C4201: nonstandard extension used : nameless struct/union
+C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\winbase.h(776): warning C4201: nonstandard extension used : nameless struct/union
+c:\users\student\documents\github\i--pixel\src\vbam\dirent.h(241): warning C4505: '_wreaddir' : unreferenced local function has been removed
+c:\users\student\documents\github\i--pixel\src\vbam\dirent.h(274): warning C4505: 'rewinddir' : unreferenced local function has been removed
   Generating code
   Finished generating code
   Direct_Access_Image_Sample.vcxproj -> C:\Users\Student\Documents\GitHub\I--Pixel\src\VBAM\Release\Direct_Access_Image_Sample.exe
