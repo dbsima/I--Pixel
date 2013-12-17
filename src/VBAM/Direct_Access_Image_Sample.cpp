@@ -40,9 +40,17 @@ int _tmain(int argc, _TCHAR* argv[])
 	KImage *confidences[50];
 	int j = 0;
 	for (int i = 0; i < argc; i+= 2) {
-		outputs[j] = new KImage(argv[i]);
-		confidences[j] = new KImage(argv[i + 1]);
-		j++;
+
+		_tprintf(_T("%s %s\n", argv[i], argv[i+1]));
+		KImage *pImage = new KImage(argv[i]);
+
+		if (pImage != NULL) {
+			outputs[j] = pImage;
+			confidences[j] = new KImage(argv[i + 1]);
+			j++;
+		} else {
+			std::cout << "Wrong input image\n";
+		}
 	}
 
     //Return with success
