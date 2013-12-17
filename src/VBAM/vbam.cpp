@@ -97,8 +97,8 @@ int main(int argc, char** argv)
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
 
-	char path_to_exe[100];
-	char command[256];
+	char path_to_exe[900];
+	char command[956];
 
 	DIR *dir;
 	struct dirent *ent;
