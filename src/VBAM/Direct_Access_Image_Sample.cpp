@@ -36,6 +36,7 @@ int _tmain(int argc, _TCHAR* argv[])
         return -99;
     }
 */
+
 	KImage *outputs[50];
 	KImage *confidences[50];
 	int j = 0;
@@ -55,6 +56,44 @@ int _tmain(int argc, _TCHAR* argv[])
 			return -100;
 		}
 	}
+
+
+	KImage *pImageBinary = new KImage(confidences[0]->GetWidth(), confidences[0]->GetHeight(), 1);
+	if (pImageBinary->BeginDirectAccess()) {
+		for(int i = 0; i < argc / 2; i++) {
+			BYTE **pDataMatrix = NULL;
+			if (confidences[i]->BeginDirectAccess() && (pDataMatrix = confidences[i]->GetDataMatrix()) != NULL) {
+				for(int x = 0; x < confidences[0]->GetWidth(); x++) {
+					for(int y = 0; y < confidences[0]->GetHeight(); y++) {
+						BYTE &PixelAtXY = pDataMatrix[y][x];
+						if (PixelAtXY == 0x80)
+							//...if black, set to black
+							pImageBinary->Put1BPPPixel(x, y, false);
+						//else {
+						// //...if not black check the options ;)
+						//	if (pImageBinary->Get1BPPPixel(x, y)
+						//	pImageBinary->Put1BPPPixel(x, y, true);
+						//}
+					}
+				}
+			}
+		}
+		pImageBinary->EndDirectAccess();
+		TCHAR strNewFileName[0x100];
+		_stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_confidence.TIF"), argv[0]);
+        pImageBinary->SaveAs(strNewFileName, SAVE_TIFF_CCITTFAX4);
+
+        //Don't forget to delete the binary image
+        delete pImageBinary;
+    }
+    else
+    {
+        _tprintf(_T("Unable to obtain direct access in binary image!"));
+        return -3;
+    }
+
+
+
 
     //Return with success
     return 0;
