@@ -1,4 +1,9 @@
-﻿  Direct_Access_Image_Sample.cpp
-  Generating code
-  Finished generating code
-  Direct_Access_Image_Sample.vcxproj -> C:\Users\Student\Documents\GitHub\I--Pixel\src\BAM-sample\Release\Direct_Access_Image_Sample.exe
+﻿Build started 12/17/2013 8:27:27 PM.
+     1>Project "C:\Users\Administrator\Documents\mps\I--Pixel\src\BAM-sample\Direct_Access_Image_Sample.vcxproj" on node 2 (clean target(s)).
+     1>_PrepareForClean:
+         Deleting file "Release\Direct_Access_Image_Sample.lastbuildstate".
+     1>Done Building Project "C:\Users\Administrator\Documents\mps\I--Pixel\src\BAM-sample\Direct_Access_Image_Sample.vcxproj" (clean target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00
