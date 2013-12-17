@@ -77,11 +77,11 @@ int _tmain(int argc, _TCHAR* argv[])
 						BYTE &PixelAtXY = pDataMatrix[y][x];
 						if (PixelAtXY < 0x80)
 							//...if black, set to black
-							pImageBinary->Put1BPPPixel(x, y, false);
+							pImageBinary->Put1BPPPixel(x, y, true);
 						else {
 						// //...if not black check the options ;)
 						//	if (pImageBinary->Get1BPPPixel(x, y)
-							pImageBinary->Put1BPPPixel(x, y, true);
+							pImageBinary->Put1BPPPixel(x, y, false);
 						}
 					}
 				}
