@@ -18,6 +18,7 @@
 
 //===========================================================================
 //===========================================================================
+using namespace std;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//printf("%s\n", argv[1]);
@@ -39,21 +40,29 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	KImage *outputs[50];
 	KImage *confidences[50];
+	KImage *original = new KImage(argv[1]);
+
+	if (original == NULL || !original->IsValid()) {
+		cout << "no original\n";
+		return -1;
+	}
 	int j = 0;
-	for (int i = 1; i < argc; i+= 2) {
+	for (int i = 2; i < argc; i+= 2) {
 
 		TCHAR strNewFileName[0x100];
          _tprintf(_T("%s %s\n"), argv[i], argv[i + 1]);
 		KImage *pImage = new KImage(argv[i]);
 
-		if (pImage != NULL && pImage->IsValid()) {
+		if (pImage != NULL && pImage->IsValid() && pImage->GetWidth() == original->GetWidth() && pImage->GetHeight() == original->GetHeight()) {
 			outputs[j] = pImage;
 			TCHAR strNewFileName[0x100];
-			confidences[j] = new KImage(argv[i + 1]);
-			j++;
+			pImage = new KImage(argv[i + 1]);
+			if (pImage != NULL && pImage->IsValid() && pImage->GetWidth() == original->GetWidth() && pImage->GetHeight() == original->GetHeight()) {
+				confidences[j] = pImage;
+				j++;
+			}
 		} else {
-			std::cout << "Wrong input image\n";
-			return -100;
+			std::cout << "Wrong input image " << argv[i] << endl;
 		}
 	}
 
