@@ -69,7 +69,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	KImage *pImageBinary = new KImage(confidences[0]->GetWidth(), confidences[0]->GetHeight(), 1);
 	if (pImageBinary->BeginDirectAccess()) {
-		for(int i = 0; i < argc / 2; i++) {
+		for(int i = 0; i < j; i++) {
 			BYTE **pDataMatrix = NULL;
 			if (confidences[i]->BeginDirectAccess() && (pDataMatrix = confidences[i]->GetDataMatrix()) != NULL) {
 				for(int x = 0; x < confidences[0]->GetWidth(); x++) {
