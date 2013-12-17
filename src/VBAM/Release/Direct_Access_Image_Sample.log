@@ -1,8 +1,18 @@
-﻿  vbam.cpp
-C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\winbase.h(249): warning C4201: nonstandard extension used : nameless struct/union
-C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\winbase.h(776): warning C4201: nonstandard extension used : nameless struct/union
-c:\users\student\documents\github\i--pixel\src\vbam\dirent.h(241): warning C4505: '_wreaddir' : unreferenced local function has been removed
-c:\users\student\documents\github\i--pixel\src\vbam\dirent.h(274): warning C4505: 'rewinddir' : unreferenced local function has been removed
-  Generating code
-  Finished generating code
-  Direct_Access_Image_Sample.vcxproj -> C:\Users\Student\Documents\GitHub\I--Pixel\src\VBAM\Release\Direct_Access_Image_Sample.exe
+﻿Build started 12/16/2013 10:04:42 AM.
+     1>Project "C:\Users\Administrator\Documents\mps\I--Pixel\src\VBAM\Direct_Access_Image_Sample.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\Direct_Access_Image_Sample.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         Direct_Access_Image_Sample.vcxproj -> C:\Users\Administrator\Documents\mps\I--Pixel\src\VBAM\Release\Direct_Access_Image_Sample.exe
+       FinalizeBuildStatus:
+         Deleting file "Release\Direct_Access_Image_Sample.unsuccessfulbuild".
+         Touching "Release\Direct_Access_Image_Sample.lastbuildstate".
+     1>Done Building Project "C:\Users\Administrator\Documents\mps\I--Pixel\src\VBAM\Direct_Access_Image_Sample.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.09

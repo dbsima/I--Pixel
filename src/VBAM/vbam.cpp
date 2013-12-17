@@ -34,6 +34,14 @@ const char *get_filename_ext(const char *filename) {
     return dot + 1;
 }
 
+DWORD WINAPI ThreadFunc(LPVOID lpParameter) {
+	printf("Pornesc threadul %s \n", lpParameter);
+
+	system((char *) lpParameter);
+
+	return 0;
+}
+
 int main(int argc, char** argv)
 {
     //Verify command-line usage correctness
@@ -65,16 +73,26 @@ int main(int argc, char** argv)
 				sprintf_s(path_to_exe, "%s\\\\%s", argv[3], ent->d_name);
 
 				memset(command, 0, 256);
-				sprintf_s(command, " /C %s %s", path_to_exe, argv[4]);
+				sprintf_s(command, "%s %s", path_to_exe, argv[4]);
 
 				//TODO get path to cmd from %COMSPEC% environment variable
 				LPCWSTR cmd = (LPTSTR)"C:\\windows\\system32\\cmd.exe";
 				LPTSTR params = (LPTSTR) command;
 
 				//printf("%s\n", cmd);
-				printf("%s%s\n", cmd, params);
-
+				//printf("%s%s\n", cmd, params);
+				//system(command);
+				//printf("%s\n", command);
 				// execute bam
+				DWORD IdThread;
+				HANDLE hThread = CreateThread(NULL,                /* default security attributes */
+			      0,                                   /* default stack size */
+			      (LPTHREAD_START_ROUTINE) ThreadFunc, /* routine to execute */
+			      (LPVOID) command,                          /* no thread parameter */
+			      0,                                   /* immediately run the thread */
+			      &IdThread);                          /* thread id */
+				//WaitForSingleObject(hThread, 4000);
+				printf("GATAAAAA\n\n\n");
 				bRes = CreateProcess( cmd, 
 								params, 
 								NULL,           // Process handle not inheritable 
