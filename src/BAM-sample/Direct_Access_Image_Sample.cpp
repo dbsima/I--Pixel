@@ -12,6 +12,7 @@
 #include "Direct_Access_Image.h"
 #include <iostream>
 #include <fstream> 
+#include <string>
 //===========================================================================
 //===========================================================================
 
@@ -21,10 +22,18 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	//printf("%s\n", argv[1]);
     //Verify command-line usage correctness
+
+    std::ofstream outfile ("C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\BAM\\test.txt");
+
+	std::wstring sStartDir=L"";
+	sStartDir = argv[0];
+
+	std::string str( sStartDir.begin(), sStartDir.end() );
+
     if (argc != 2)
     {
         _tprintf(_T("Use: %s <Input_Image_File_Name (24BPP True-Color)>\n"), argv[0]);
-        return -1;
+        return -99;
     }
 
     //Buffer for the new file names
@@ -43,8 +52,9 @@ int _tmain(int argc, _TCHAR* argv[])
     _stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_blurred.TIF"), argv[0]);
     pImage->SaveAs(strNewFileName, SAVE_TIFF_LZW);
 
-	std::ofstream outfile ("C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\BAM\\test.txt");
-	outfile<<"strNewFileName"<<argv[1]<<"\n";
+
+
+	outfile<<"strNewFileName"<<str<<"\n";
 	outfile.close();
 	 _tprintf(_T("%s\n"), strNewFileName);
 

@@ -34,6 +34,51 @@ const char *get_filename_ext(const char *filename) {
     return dot + 1;
 }
 
+static VOID RedirectHandle(STARTUPINFO *psi, HANDLE in, HANDLE out, HANDLE err)
+{
+        psi->dwFlags = STARTF_USESTDHANDLES;
+        psi->hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+        psi->hStdInput = GetStdHandle(STD_INPUT_HANDLE);
+        psi->hStdError = GetStdHandle(STD_ERROR_HANDLE);
+        
+        if (in != INVALID_HANDLE_VALUE)
+                psi->hStdInput = in;
+        if (out != INVALID_HANDLE_VALUE)
+                psi->hStdOutput = out;
+        if (err != INVALID_HANDLE_VALUE)
+                psi->hStdError = err;
+}
+
+#define ERR_MSG                ": command not found\n"
+
+static HANDLE WinCreateProcess(LPWSTR command) 
+{
+        STARTUPINFO si;
+        PROCESS_INFORMATION pi;
+        BOOL bRes;
+
+        ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+        ZeroMemory(&pi, sizeof(pi));
+
+        //RedirectHandle(&si, in, out, err);
+
+        bRes = CreateProcess(NULL, command, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
+
+		if(bRes == FALSE) printf("CreateProcess failed\n");
+
+		DWORD dwRes = WaitForSingleObject(pi.hProcess, INFINITE);
+		if(dwRes == WAIT_FAILED) printf("WaitForSingleObject failed\n");
+ 
+		bRes = GetExitCodeProcess(pi.hProcess, &dwRes);
+		printf("GetExitCodeProcess Failed  %d\n", dwRes);
+
+		CloseHandle(pi.hThread);
+        return pi.hProcess;
+}
+
+
+
 int main(int argc, char** argv)
 {
     //Verify command-line usage correctness
@@ -65,17 +110,25 @@ int main(int argc, char** argv)
 				sprintf_s(path_to_exe, "%s\\\\%s", argv[3], ent->d_name);
 
 				memset(command, 0, 256);
-				sprintf_s(command, " /C %s %s", path_to_exe, argv[4]);
-
+				//sprintf_s(command, " /C %s %s", path_to_exe, argv[4]);
+				sprintf_s(command, "%s %s", path_to_exe, argv[4]);
 				//TODO get path to cmd from %COMSPEC% environment variable
-				LPCWSTR cmd = (LPTSTR)"C:\\windows\\system32\\cmd.exe";
+				LPCWSTR cmd = (LPCWSTR)"C:\\windows\\system32\\cmd.exe";
 				LPTSTR params = (LPTSTR) command;
 
 				//printf("%s\n", cmd);
 				printf("%s%s\n", cmd, params);
 
 				// execute bam
-				bRes = CreateProcess( cmd, 
+
+				HANDLE in = WinCreateProcess(params);
+
+				printf("\n%d\n", in);
+
+				if (in < 0)
+					printf("CreateProcess failed\n");
+				
+				/*bRes = CreateProcess( NULL, 
 								params, 
 								NULL,           // Process handle not inheritable 
 								NULL,           // Thread handle not inheritable 
@@ -91,14 +144,14 @@ int main(int argc, char** argv)
  
 				//Wait for the child to finish 
 				dwRes = WaitForSingleObject(pi.hProcess, INFINITE);
-				if(dwRes == WAIT_FAILED) printf("WaitForSingleObject");
+				if(dwRes == WAIT_FAILED) printf("WaitForSingleObject failed\n");
  
 				bRes = GetExitCodeProcess(pi.hProcess, &dwRes);
-				if(bRes == FALSE) printf("%d\n", bRes);
+				if(bRes == FALSE) printf("GetExitCodeProcess Failed\n");
 
 				CloseHandle(&pi.hThread);
 				CloseHandle(&pi.hProcess);
-				
+				*/
 			}
 
 		}
