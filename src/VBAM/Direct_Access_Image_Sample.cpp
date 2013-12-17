@@ -30,17 +30,27 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	std::string str( sStartDir.begin(), sStartDir.end() );
 
-    if (argc != 2)
+  /*  if (argc != 2)
     {
         _tprintf(_T("Use: %s <Input_Image_File_Name (24BPP True-Color)>\n"), argv[0]);
         return -99;
     }
+*/
+	KImage *outputs[50];
+	KImage *confidences[50];
+	int j = 0;
+	for (int i = 0; i < argc; i+= 2) {
+		outputs[j] = new KImage(argv[i]);
+		confidences[j] = new KImage(argv[i + 1]);
+		j++;
+	}
 
     //Buffer for the new file names
     TCHAR strNewFileName[0x100];
 	 _tprintf(_T("%s\n"), argv[1]);
     //Load and verify that input image is a True-Color one
     KImage *pImage = new KImage(argv[1]);
+
     if (pImage == NULL || !pImage->IsValid() || pImage->GetBPP() != 24)
     {
         _tprintf(_T("File %s does is not a valid True-Color image!"), argv[0]);
