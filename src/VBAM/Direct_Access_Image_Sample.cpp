@@ -87,26 +87,37 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 			}
 		}
+
 		KImage *pImageAverage = new KImage(confidences[0]->GetWidth(), confidences[0]->GetHeight(), 1);
 		if (pImageAverage->BeginDirectAccess()) {
-		for(int i = 0; i < j; i++) {
-			BYTE **pDataMatrix = NULL;
-			if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
-				for(int x = 0; x < confidences[0]->GetWidth(); x++) {
-					for(int y = 0; y < confidences[0]->GetHeight(); y++) {
-						BYTE &PixelAtXY = pDataMatrix[y][x];
-						if (PixelAtXY < 0x80)
-							//...if black, set to black
-							pImageAverage->Put1BPPPixel(x, y, true);
-						else {
-						// //...if not black check the options ;)
-						//	if (pImageBinary->Get1BPPPixel(x, y)
-							pImageAverage->Put1BPPPixel(x, y, false);
-						}
-					}
+			for(int x = 0; x < outputs[0]->GetWidth(); x++) 
+					for(int y = 0; y < outputs[0]->GetHeight(); y++) 
+						pImageAverage->Put1BPPPixel(x, y, true);
+			
+				BYTE **pDataMatrix = NULL;
+				
+					for(int x = 0; x < outputs[0]->GetWidth(); x++) {
+						for(int y = 0; y < outputs[0]->GetHeight(); y++) {
+							//BYTE &PixelAtXY = pDataMatrix[y][x];
+							//if (PixelAtXY == 0xFF)
+								//...if black, set to black
+							int count = 0;
+							for(int i = 0; i < j; i++) {
+								if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
+									if (outputs[i]->Get1BPPPixel(x, y) == false)
+										count++;
+							
+							//else {
+							// //...if not black check the options ;)
+							//	if (pImageBinary->Get1BPPPixel(x, y)
+							/*	pImageAverage->Put1BPPPixel(x, y, false);
+							}*/
+								}
+							}
+							if (count > 0 && count / j >= j / 2)
+								pImageAverage->Put1BPPPixel(x, y, false);
 				}
 			}
-		}
 		}
 		pImageAverage->EndDirectAccess();
 		TCHAR strNewFileName[0x100];
