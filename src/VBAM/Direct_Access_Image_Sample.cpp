@@ -24,12 +24,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//printf("%s\n", argv[1]);
     //Verify command-line usage correctness
 
-    std::ofstream outfile ("C:\\Users\\Student\\Documents\\GitHub\\I--Pixel\\test\\BAM\\test.txt");
 
-	std::wstring sStartDir=L"";
-	sStartDir = argv[0];
-
-	std::string str( sStartDir.begin(), sStartDir.end() );
 
   /*  if (argc != 2)
     {
