@@ -26,12 +26,12 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 
-  /*  if (argc != 2)
+    if (argc < 3)
     {
-        _tprintf(_T("Use: %s <Input_Image_File_Name (24BPP True-Color)>\n"), argv[0]);
+        _tprintf(_T("Wrong usage\n"), argv[0]);
         return -99;
     }
-*/
+
 
 	KImage *outputs[50];
 	KImage *confidences[50];
