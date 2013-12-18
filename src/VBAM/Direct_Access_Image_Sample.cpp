@@ -103,7 +103,7 @@ int _tmain(int argc, _TCHAR* argv[])
 							count[i] = 0;
 						for(int i = 0; i < j; i++) {
 							BYTE **pDataMatrix = NULL;
-							if (confidences[i]->BeginDirectAccess() && (pDataMatrix = confidences[i]->GetDataMatrix()) != NULL) {
+							if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
 								BYTE &PixelAtXY = pDataMatrix[y][x];
 								if (PixelAtXY < 0x80)
 									average++;
