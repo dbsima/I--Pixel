@@ -89,7 +89,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		KImage *pImageAverage = new KImage(confidences[0]->GetWidth(), confidences[0]->GetHeight(), 1);
 		if (pImageAverage->BeginDirectAccess()) {
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < j; i++) {
 			BYTE **pDataMatrix = NULL;
 			if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
 				for(int x = 0; x < confidences[0]->GetWidth(); x++) {
@@ -110,14 +110,14 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		pImageAverage->EndDirectAccess();
 		TCHAR strNewFileName[0x100];
-		_stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_confidence.TIF"), argv[0]);
+		_stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_average.TIF"), argv[0]);
         pImageAverage->SaveAs(strNewFileName, SAVE_TIFF_CCITTFAX4);
 
 		// Average
 		
 		pImageBinary->EndDirectAccess();
 		TCHAR strNewFileNamae[0x100];
-		_stprintf_s(strNewFileNamae, sizeof(strNewFileNamae) / sizeof(TCHAR), _T("%s_average.TIF"), argv[0]);
+		_stprintf_s(strNewFileNamae, sizeof(strNewFileNamae) / sizeof(TCHAR), _T("%s_confidence.TIF"), argv[0]);
         pImageBinary->SaveAs(strNewFileNamae, SAVE_TIFF_CCITTFAX4);
 
 
