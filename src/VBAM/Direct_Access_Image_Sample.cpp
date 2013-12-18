@@ -104,7 +104,7 @@ int _tmain(int argc, _TCHAR* argv[])
 							int count = 0;
 							for(int i = 0; i < j; i++) {
 								if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
-									if (outputs[i]->Get1BPPPixel(x, y) == false)
+									if (outputs[i]->Get1BPPPixel(x, y) == false || pImageBinary->Get1BPPPixel(x, y))
 										count++;
 							
 							//else {
