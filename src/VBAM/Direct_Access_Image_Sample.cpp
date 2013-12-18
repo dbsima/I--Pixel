@@ -101,18 +101,19 @@ int _tmain(int argc, _TCHAR* argv[])
 						int average = 0;
 						for(int i = 0; i < 256; i++)
 							count[i] = 0;
+						average = 0;
 						for(int i = 0; i < j; i++) {
 							BYTE **pDataMatrix = NULL;
 							if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
 								BYTE &PixelAtXY = pDataMatrix[y][x];
-								if (PixelAtXY < 0x80)
+								if (PixelAtXY < 0x90)
 									average++;
 							//	count[(int)PixelAtXY]++;
 								//cout << PixelAtXY << " ";
 							}
 						}
 						
-						if (average > j / 2 - 1)
+						if (average > 0)
 							pImageAverage->Put1BPPPixel(x, y, false);
 						else
 							pImageAverage->Put1BPPPixel(x, y, true);
@@ -127,7 +128,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		pImageAverage->EndDirectAccess();
 		TCHAR strNewFileNamae[0x100];
 		_stprintf_s(strNewFileNamae, sizeof(strNewFileNamae) / sizeof(TCHAR), _T("%s_average.TIF"), argv[0]);
-        pImageBinary->SaveAs(strNewFileNamae, SAVE_TIFF_CCITTFAX4);
+        pImageAverage->SaveAs(strNewFileNamae, SAVE_TIFF_CCITTFAX4);
 
 
         //Don't forget to delete the binary image
