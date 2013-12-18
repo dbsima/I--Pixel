@@ -87,48 +87,38 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 			}
 		}
-		pImageBinary->EndDirectAccess();
-		TCHAR strNewFileName[0x100];
-		_stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_confidence.TIF"), argv[0]);
-        pImageBinary->SaveAs(strNewFileName, SAVE_TIFF_CCITTFAX4);
-
-		// Average
 		KImage *pImageAverage = new KImage(confidences[0]->GetWidth(), confidences[0]->GetHeight(), 1);
 		if (pImageAverage->BeginDirectAccess()) {
-			for(int x = 0; x < confidences[0]->GetWidth(); x++) {
+		for(int i = 0; i < 1; i++) {
+			BYTE **pDataMatrix = NULL;
+			if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
+				for(int x = 0; x < confidences[0]->GetWidth(); x++) {
 					for(int y = 0; y < confidences[0]->GetHeight(); y++) {
-						int count[256];
-						int average = 0;
-						for(int i = 0; i < 256; i++)
-							count[i] = 0;
-						average = 0;
-						for(int i = 0; i < j; i++) {
-							BYTE **pDataMatrix = NULL;
-							if (outputs[i]->BeginDirectAccess() && (pDataMatrix = outputs[i]->GetDataMatrix()) != NULL) {
-								BYTE &PixelAtXY = pDataMatrix[y][x];
-								if (PixelAtXY < 0x90)
-									average++;
-							//	count[(int)PixelAtXY]++;
-								//cout << PixelAtXY << " ";
-							}
-						}
-						
-						if (average > 0)
-							pImageAverage->Put1BPPPixel(x, y, false);
-						else
+						BYTE &PixelAtXY = pDataMatrix[y][x];
+						if (PixelAtXY < 0x80)
+							//...if black, set to black
 							pImageAverage->Put1BPPPixel(x, y, true);
-
-							/*average += count[i];
-							cout << count[i];*/
-						
-						//average = average / (j * (j - 1));
+						else {
+						// //...if not black check the options ;)
+						//	if (pImageBinary->Get1BPPPixel(x, y)
+							pImageAverage->Put1BPPPixel(x, y, false);
+						}
 					}
+				}
 			}
 		}
+		}
 		pImageAverage->EndDirectAccess();
+		TCHAR strNewFileName[0x100];
+		_stprintf_s(strNewFileName, sizeof(strNewFileName) / sizeof(TCHAR), _T("%s_confidence.TIF"), argv[0]);
+        pImageAverage->SaveAs(strNewFileName, SAVE_TIFF_CCITTFAX4);
+
+		// Average
+		
+		pImageBinary->EndDirectAccess();
 		TCHAR strNewFileNamae[0x100];
 		_stprintf_s(strNewFileNamae, sizeof(strNewFileNamae) / sizeof(TCHAR), _T("%s_average.TIF"), argv[0]);
-        pImageAverage->SaveAs(strNewFileNamae, SAVE_TIFF_CCITTFAX4);
+        pImageBinary->SaveAs(strNewFileNamae, SAVE_TIFF_CCITTFAX4);
 
 
         //Don't forget to delete the binary image
